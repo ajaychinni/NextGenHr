@@ -1,0 +1,45 @@
+/* src/components/StatusBubbles/StatusBubbles.css */
+.status-bubbles {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .bubble {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .bubble span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 80%;
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .total span {
+    background-color: #6998FF; /* Blue bubble */
+  }
+  
+  .completed span {
+    background-color: #90D7A1; /* Green bubble */
+  }
+  
+  .pending span {
+    background-color: #FF6B6B; /* Red bubble */
+  }
+  
+  .bubble p {
+    margin-top: 10px;
+    font-size: 20px;
+    color: black;
+  }
+  
