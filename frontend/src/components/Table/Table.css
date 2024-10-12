@@ -1,0 +1,38 @@
+/* src/components/Table/Table.css */
+.table-container {
+    margin: 20px 0;
+  }
+  
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .custom-table th {
+    background-color: #d3d3d3;
+  }
+  
+  .approve-btn {
+    background-color: #90D7A1; /* Green color for approve */
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .reject-btn {
+    background-color: #FF6B6B; /* Red color for reject */
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+  }
+  
