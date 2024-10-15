@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
+import './style/Candidate.css'
 
 function Candidate() {
   return (
@@ -18,6 +19,11 @@ function Candidate() {
               whiteSpace: 'nowrap' 
             }}
           >
+            <div className="me-3"><ProfileCard /></div>
+            <div className="me-3"><ProfileCard /></div>
+            <div className="me-3"><ProfileCard /></div>
+            <div className="me-3"><ProfileCard /></div>
+            <div className="me-3"><ProfileCard /></div>
             <div className="me-3"><ProfileCard /></div>
             <div className="me-3"><ProfileCard /></div>
             <div className="me-3"><ProfileCard /></div>

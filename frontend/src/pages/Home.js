@@ -1,5 +1,4 @@
-// src/pages/Home.js
-import React from 'react';
+import React, { useState } from 'react';
 import StatusBubbles from '../components/StatusBubbles/StatusBubbles';
 import TableComponent from '../components/Table/Table';
 
@@ -12,6 +11,8 @@ const createTableData = (columns, rows) => {
 };
 
 function Home() {
+  // State to track which table is currently visible
+  const [currentTable, setCurrentTable] = useState('attentionRequired'); // Default to first table
 
   const attentionRequiredColumns = ['Name', 'Date', 'Status', 'Action'];
   const attentionRequiredData = [
@@ -27,20 +28,44 @@ function Home() {
 
   // Create different tables by passing column names and data to the function
   const attentionRequiredTable = createTableData(attentionRequiredColumns, attentionRequiredData);
-  const UpcomingInterviewsTable = createTableData(upcomingInterviewsColumns, upcomingInterviewsData);
+  const upcomingInterviewsTable = createTableData(upcomingInterviewsColumns, upcomingInterviewsData);
+
+  // Function to toggle between tables
+  const handleTableChange = (tableName) => {
+    setCurrentTable(tableName);
+  };
 
   return (
     <div className="home">
       <h1>Welcome to NextGenHR Home Page</h1>
       <StatusBubbles />
 
-      {/* Table 1 */}
-      <h2>Attention Required</h2>
-      <TableComponent columns={attentionRequiredTable.columns} data={attentionRequiredTable.data} />
+      {/* Toggle buttons */}
+      <div style={{ marginBottom: '20px' }}>
+        <button
+        style={{ marginRight: '10px' }}
+         onClick={() => handleTableChange('attentionRequired')}>
+          Attention Required
+        </button>
+        <button onClick={() => handleTableChange('upcomingInterviews')}>
+          Upcoming Interviews
+        </button>
+      </div>
 
-      {/* Table 2 */}
-      <h2>Upcoming Interviews</h2>
-      <TableComponent columns={UpcomingInterviewsTable.columns} data={UpcomingInterviewsTable.data} />
+      {/* Conditionally render the table based on the selected button */}
+      {currentTable === 'attentionRequired' && (
+        <div>
+          <h2>Attention Required</h2>
+          <TableComponent columns={attentionRequiredTable.columns} data={attentionRequiredTable.data} />
+        </div>
+      )}
+
+      {currentTable === 'upcomingInterviews' && (
+        <div>
+          <h2>Upcoming Interviews</h2>
+          <TableComponent columns={upcomingInterviewsTable.columns} data={upcomingInterviewsTable.data} />
+        </div>
+      )}
     </div>
   );
 }
