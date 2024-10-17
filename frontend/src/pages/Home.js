@@ -35,7 +35,7 @@ function Home() {
 
   return (
     <div className="home">
-      <h1>Welcome to NextGenHR Home Page</h1>
+
       <StatusBubbles />
 
       <Tabs tabs={tabs}>
