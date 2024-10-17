@@ -1,0 +1,19 @@
+textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    resize: vertical;
+  }
+  
+  textarea::placeholder {
+    color: #aaa;
+  }
+  
+  textarea:focus {
+    border-color: #7b61ff;
+    outline: none;
+  }
+  
