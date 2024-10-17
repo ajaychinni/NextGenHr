@@ -9,26 +9,17 @@ function Candidate() {
       <div className="row mb-4">
         <div className="col">
           <h3>AI Selected Candidates</h3>
-          <div
-            className="d-flex justify-content-start"
-            style={{
-              backgroundColor: '#d4edda',
-              padding: '10px',
-              borderRadius: '5px',
-              overflowX: 'auto', // Enable horizontal scroll
-              whiteSpace: 'nowrap' 
-            }}
-          >
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
+          <div className="candidate-panel ai-selected">
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
           </div>
         </div>
       </div>
@@ -37,21 +28,12 @@ function Candidate() {
       <div className="row">
         <div className="col">
           <h3>AI Rejected Candidates</h3>
-          <div
-            className="d-flex justify-content-start"
-            style={{
-              backgroundColor: '#f8d7da',
-              padding: '10px',
-              borderRadius: '5px',
-              overflowX: 'auto', 
-              whiteSpace: 'nowrap'
-            }}
-          >
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
-            <div className="me-3"><ProfileCard /></div>
+          <div className="candidate-panel ai-rejected">
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
+            <div className="profile-card-wrapper"><ProfileCard /></div>
           </div>
         </div>
       </div>

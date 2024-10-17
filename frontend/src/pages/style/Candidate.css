@@ -1,0 +1,21 @@
+.candidate-panel {
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto; /* Enable horizontal scroll */
+    white-space: nowrap;
+  }
+  
+  .ai-selected {
+    background-color: #d4edda; /* Light green background */
+  }
+  
+  .ai-rejected {
+    background-color: #f8d7da; /* Light red background */
+  }
+  
+  .profile-card-wrapper {
+    margin-right: 15px; /* Space between profile cards */
+  }
+  

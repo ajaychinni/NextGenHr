@@ -1,9 +1,10 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import './ProfileCard.css';
 
 const ProfileCard = () => {
   return (
-    <div className="card shadow-lg" style={{ width: "300px", margin: "auto", padding: "2px" }}>
+    <div className="card shadow-lg profile-card">
       <div className="card-body">
         
         {/* Flex container to align photo, score, and details */}
@@ -11,38 +12,32 @@ const ProfileCard = () => {
           {/* Photo and Score Container */}
           <div className="d-flex flex-column align-items-center">
             {/* Photo Box */}
-            <div
-              className="d-flex justify-content-center align-items-center border mb-2"
-              style={{ width: "60px", height: "60px", borderRadius: "50%", marginBottom: "2px" }}
-            >
+            <div className="photo-box d-flex justify-content-center align-items-center border mb-2">
               <p className="text-muted">Photo</p>
             </div>
 
             {/* Score Section */}
-            <div
-              className="border text-center p-1"
-              style={{ width: "90px", height: "40px" }}
-            >
+            <div className="score-box border text-center p-1">
               <p className="mb-0">100 / 100</p>
             </div>
           </div>
 
           {/* Job Title and Name Section */}
-          <div className="d-flex flex-column justify-content-center" style={{ marginLeft: "15px" }}>
+          <div className="job-name-section d-flex flex-column justify-content-center">
             {/* Job Title */}
-            <div className="border text-center p-1 mb-2" style={{ width: "150px" }}>
+            <div className="job-title border text-center p-1 mb-2">
               <h8 className="card-subtitle text-muted">AI Developer</h8>
             </div>
 
             {/* Name Section */}
-            <div className="border text-center p-1" style={{ width: "150px" }}>
+            <div className="name-section border text-center p-1">
               <h6 className="card-title mb-0">Ajay Chinni</h6>
             </div>
           </div>
         </div>
 
         {/* Description */}
-        <div className="border p-1">
+        <div className="description-box border p-1">
           <ul className="mb-0">
             <li>Great understanding of LLMs.</li>
             <li>Solid grasp of ML basics.</li>
