@@ -47,8 +47,7 @@ function Candidate() {
       {/* Top Bar with Dropdown */}
       <div className="row mb-4">
         <div className="col">
-          <label htmlFor="jobDropdown" className="form-label">
-          </label>
+          <label htmlFor="jobDropdown" className="form-label"></label>
           <select
             id="jobDropdown"
             className="form-select"
@@ -70,11 +69,15 @@ function Candidate() {
         <div className="col">
           <h3>AI Selected Candidates</h3>
           <div className="candidate-panel ai-selected">
-            {candidates
-              .filter((candidate) => candidate.status === 'Hired')
-              .map((candidate) => (
-                <ProfileCard key={candidate.candidate_id} candidate={candidate} />
-              ))}
+            {candidates.filter((candidate) => candidate.status === 'Hired').length > 0 ? (
+              candidates
+                .filter((candidate) => candidate.status === 'Hired')
+                .map((candidate) => (
+                  <ProfileCard key={candidate.candidate_id} candidate={candidate} />
+                ))
+            ) : (
+              <div className="candidate-panel-placeholder">No candidates selected yet</div>
+            )}
           </div>
         </div>
       </div>
@@ -83,17 +86,21 @@ function Candidate() {
         <div className="col">
           <h3>AI Rejected Candidates</h3>
           <div className="candidate-panel ai-rejected">
-            {candidates
-              .filter((candidate) => candidate.status === 'Rejected')
-              .map((candidate) => (
-                <ProfileCard key={candidate.candidate_id} candidate={candidate} />
-              ))}
+            {candidates.filter((candidate) => candidate.status === 'Rejected').length > 0 ? (
+              candidates
+                .filter((candidate) => candidate.status === 'Rejected')
+                .map((candidate) => (
+                  <ProfileCard key={candidate.candidate_id} candidate={candidate} />
+                ))
+            ) : (
+              <div className="candidate-panel-placeholder">No candidates rejected yet</div>
+            )}
           </div>
         </div>
       </div>
 
-            {/* Bottom Center Update Button */}
-            <div className="row mt-4">
+      {/* Bottom Center Update Button */}
+      <div className="row mt-4">
         <div className="col text-center">
           <button className="btn btn-primary">Update</button>
         </div>

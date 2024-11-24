@@ -1,19 +1,27 @@
 .candidate-panel {
-    display: flex;
-    justify-content: start;
-    padding: 10px;
-    border-radius: 5px;
-    overflow-x: auto; /* Enable horizontal scroll */
-    white-space: nowrap;
-  }
+  display: flex;
+  justify-content: start;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto; /* Enable horizontal scroll */
+  white-space: nowrap;
+  min-height: 150px; /* Ensures the panel has a default height */
+  align-items: center; /* Centers placeholder text */
+}
+.ai-selected {
+  background-color: #d4edda; /* Light green background */
+}
   
-  .ai-selected {
-    background-color: #d4edda; /* Light green background */
-  }
-  
-  .ai-rejected {
-    background-color: #f8d7da; /* Light red background */
-  }
+.ai-rejected {
+  background-color: #f8d7da; /* Light red background */
+}
+
+.candidate-panel-placeholder {
+  font-size: 16px;
+  color: #6c757d; /* Light gray text for placeholder */
+  text-align: center;
+  width: 100%; /* Makes placeholder span the width of the container */
+}
   
   .profile-card-wrapper {
     margin-right: 15px; /* Space between profile cards */
