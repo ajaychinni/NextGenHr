@@ -18,4 +18,21 @@
   .profile-card-wrapper {
     margin-right: 15px; /* Space between profile cards */
   }
+
+
+  /* Dropdown styling */
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-select {
+  max-width: 300px;
+}
+
+/* Center-aligned Update button */
+button.btn-primary {
+  width: 150px;
+}
+
   
