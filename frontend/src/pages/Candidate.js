@@ -1,11 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import './style/Candidate.css';
 
 function Candidate() {
+  const [jobIds, setJobIds] = useState([]); // List of job IDs
   const [selectedJobId, setSelectedJobId] = useState('');
+  const [candidates, setCandidates] = useState([]); // Candidates based on job ID
 
-  const jobIds = ['Job ID 1', 'Job ID 2', 'Job ID 3', 'Job ID 4']; // Replace with your job IDs
+  // Fetch job IDs on component mount
+  useEffect(() => {
+    const fetchJobIds = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/candidate-profile/jobs');
+        setJobIds(response.data);
+      } catch (error) {
+        console.error('Error fetching job IDs:', error);
+      }
+    };
+
+    fetchJobIds();
+  }, []);
+
+  // Fetch candidates when a job ID is selected
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      if (!selectedJobId) return;
+
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/candidate-profile/${selectedJobId}`);
+        setCandidates(response.data);
+      } catch (error) {
+        console.error('Error fetching candidates:', error);
+      }
+    };
+
+    fetchCandidates();
+  }, [selectedJobId]);
 
   const handleJobChange = (event) => {
     setSelectedJobId(event.target.value);
@@ -34,30 +65,35 @@ function Candidate() {
         </div>
       </div>
 
-      {/* Panel 1: AI Selected Candidates */}
-      <div className="row mb-4">
+      {/* Candidate Panels */}
+      <div className="row">
         <div className="col">
           <h3>AI Selected Candidates</h3>
           <div className="candidate-panel ai-selected">
-            <div className="profile-card-wrapper"><ProfileCard /></div>
-            {/* Add more ProfileCard components dynamically as needed */}
+            {candidates
+              .filter((candidate) => candidate.status === 'Hired')
+              .map((candidate) => (
+                <ProfileCard key={candidate.candidate_id} candidate={candidate} />
+              ))}
           </div>
         </div>
       </div>
 
-      {/* Panel 2: AI Rejected Candidates */}
       <div className="row">
         <div className="col">
           <h3>AI Rejected Candidates</h3>
           <div className="candidate-panel ai-rejected">
-            <div className="profile-card-wrapper"><ProfileCard /></div>
-            {/* Add more ProfileCard components dynamically as needed */}
+            {candidates
+              .filter((candidate) => candidate.status === 'Rejected')
+              .map((candidate) => (
+                <ProfileCard key={candidate.candidate_id} candidate={candidate} />
+              ))}
           </div>
         </div>
       </div>
 
-      {/* Bottom Center Update Button */}
-      <div className="row mt-4">
+            {/* Bottom Center Update Button */}
+            <div className="row mt-4">
         <div className="col text-center">
           <button className="btn btn-primary">Update</button>
         </div>
