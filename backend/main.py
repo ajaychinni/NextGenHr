@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import candidates, jobs, applications, interviews, candidate_resumes, previous_employments, main_skills, upload, status_bubbles
+from .routers import candidates, jobs, applications, interviews, candidate_resumes, previous_employments, main_skills, upload, status_bubbles, home_page_tables
 from .database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -21,6 +21,7 @@ app.include_router(previous_employments.router)
 app.include_router(main_skills.router)
 app.include_router(upload.router)
 app.include_router(status_bubbles.router)
+app.include_router(home_page_tables.router)
 
 app.add_middleware(
     CORSMiddleware,

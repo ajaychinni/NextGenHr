@@ -1,57 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import StatusBubbles from '../components/StatusBubbles/StatusBubbles';
 import TableComponent from '../components/Table/Table';
 import Tabs from '../components/Tabs/Tabs';
 
-// Function to generate column names and data
-const createTableData = (columns, rows) => {
-  return {
-    columns,
-    data: rows
-  };
-};
-
 function Home() {
+  const [attentionRequiredData, setAttentionRequiredData] = useState([]);
+  const [upcomingInterviewsData, setUpcomingInterviewsData] = useState([]);
+
   const attentionRequiredColumns = ['Name', 'Date', 'Status', 'Action'];
-  const attentionRequiredData = [
-    { name: 'Sagar', date: '29 Sep 2024', status: 'Interview Completed Waiting Feedback' },
-    { name: 'Ajay', date: '29 Sep 2024', status: 'Not Responding' }
-  ];
-
   const upcomingInterviewsColumns = ['Name', 'Date', 'Job Role', 'Action'];
-  const upcomingInterviewsData = [
-    { name: 'Karan', date: '30 Sep 2024', status: 'Block Chain Dev' },
-    { name: 'Muskan', date: '01 Oct 2024', status: 'Full stack Dev' }
-  ];
 
-  const attentionRequiredTable = createTableData(attentionRequiredColumns, attentionRequiredData);
-  const upcomingInterviewsTable = createTableData(upcomingInterviewsColumns, upcomingInterviewsData);
+  // Map column names to keys in API response
+  const attentionRequiredKeyMap = {
+    Name: 'name',
+    Date: 'date',
+    Status: 'status',
+    Action: '',
+  };
 
-  // Tabs data
+  const upcomingInterviewsKeyMap = {
+    Name: 'name',
+    Date: 'date',
+    'Job Role': 'job_role',
+    Action: '',
+  };
+
+  useEffect(() => {
+    // Fetch Attention Required Data
+    axios
+      .get('http://127.0.0.1:8000/tables/attention-required')
+      .then((response) => setAttentionRequiredData(response.data))
+      .catch((error) => console.error('Error fetching attention required data:', error));
+
+    // Fetch Upcoming Interviews Data
+    axios
+      .get('http://127.0.0.1:8000/tables/upcoming-interviews')
+      .then((response) => setUpcomingInterviewsData(response.data))
+      .catch((error) => console.error('Error fetching upcoming interviews data:', error));
+  }, []);
+
   const tabs = {
     attentionRequired: 'Attention Required',
-    upcomingInterviews: 'Upcoming Interviews'
+    upcomingInterviews: 'Upcoming Interviews',
   };
 
   return (
     <div className="home">
-
       <StatusBubbles />
-
       <Tabs tabs={tabs}>
         {{
           attentionRequired: (
             <div>
               <h2>Attention Required</h2>
-              <TableComponent columns={attentionRequiredTable.columns} data={attentionRequiredTable.data} />
+              <TableComponent
+                columns={attentionRequiredColumns}
+                data={attentionRequiredData}
+                columnKeyMap={attentionRequiredKeyMap}
+              />
             </div>
           ),
           upcomingInterviews: (
             <div>
               <h2>Upcoming Interviews</h2>
-              <TableComponent columns={upcomingInterviewsTable.columns} data={upcomingInterviewsTable.data} />
+              <TableComponent
+                columns={upcomingInterviewsColumns}
+                data={upcomingInterviewsData}
+                columnKeyMap={upcomingInterviewsKeyMap}
+              />
             </div>
-          )
+          ),
         }}
       </Tabs>
     </div>

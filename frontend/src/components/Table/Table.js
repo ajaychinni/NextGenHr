@@ -1,8 +1,7 @@
-// src/components/Table/Table.js
 import React from 'react';
 import './Table.css';
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, data, columnKeyMap }) => {
   return (
     <div className="table-container">
       <table className="custom-table">
@@ -16,13 +15,18 @@ const Table = ({ columns, data }) => {
         <tbody>
           {data.map((row, index) => (
             <tr key={index}>
-              <td>{row.name}</td>
-              <td>{row.date}</td>
-              <td>{row.status}</td>
-              <td>
-                <button className="approve-btn">Approve</button>
-                <button className="reject-btn">Reject</button>
-              </td>
+              {columns.map((col, colIndex) => (
+                <td key={colIndex}>
+                  {col === 'Action' ? (
+                    <>
+                      <button className="approve-btn">Approve</button>
+                      <button className="reject-btn">Reject</button>
+                    </>
+                  ) : (
+                    row[columnKeyMap[col]] || '-' // Use mapping to fetch the correct value or show "-"
+                  )}
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
