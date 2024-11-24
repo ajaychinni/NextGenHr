@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from ..database import get_db
-from ..models import candidate_resume as models
-from ..schemas import candidate_resume as schemas
+from ..models import candidate_resumes as models
+from ..schemas import candidate_resumes as schemas
 
 router = APIRouter(
     prefix="/candidate_resumes",
