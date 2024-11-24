@@ -3,7 +3,9 @@ import FileUpload from '../components/FileUpload/FileUpload';
 import TextArea from '../components/TextArea/TextArea';
 import DateTimePicker from '../components/DateTimePicker/DateTimePicker';
 import Button from '../components/Button/Button';
+import './style/ScheduleInterview.css'
 import axios from 'axios';
+
 
 function ScheduleInterview() {
   const [resumeFile, setResumeFile] = useState(null);
@@ -11,16 +13,25 @@ function ScheduleInterview() {
   const [extraQuestions, setExtraQuestions] = useState('');
   const [scheduledDateTime, setScheduledDateTime] = useState(null);
 
+  // New state variables for messages
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleScheduleInterview = async () => {
+    // Clear previous messages
+    setSuccessMessage('');
+    setErrorMessage('');
+
+    // Validate file inputs
     if (!resumeFile || !jobDescriptionFile) {
-      alert('Please upload both Resume and Job Description files.');
+      setErrorMessage('Please upload both Resume and Job Description files.');
       return;
     }
 
     const formData = new FormData();
     formData.append('resume', resumeFile);
     formData.append('job_description', jobDescriptionFile);
-    // Append other data 
+    // Append other data if needed
     // formData.append('extra_questions', extraQuestions);
     // formData.append('scheduled_date_time', scheduledDateTime);
 
@@ -34,10 +45,16 @@ function ScheduleInterview() {
           },
         }
       );
-      alert(response.data.message);
+      setSuccessMessage(response.data.message);
+
+      // Optionally, reset form fields after successful submission
+      // setResumeFile(null);
+      // setJobDescriptionFile(null);
+      // setExtraQuestions('');
+      // setScheduledDateTime(null);
     } catch (error) {
       console.error(error);
-      alert('Failed to upload files');
+      setErrorMessage('Failed to upload files.');
     }
   };
 
@@ -45,6 +62,8 @@ function ScheduleInterview() {
     <div className="schedule-interview">
       <div className="content-container">
         <h1>Schedule Interview</h1>
+
+
 
         {/* Upload Resume and Job Description */}
         <div className="upload-section">
@@ -80,6 +99,10 @@ function ScheduleInterview() {
         <div className="schedule-button">
           <Button label="Schedule Interview" onClick={handleScheduleInterview} />
         </div>
+
+        {/* Display Success or Error Messages */}
+        {successMessage && <div className="success-message">{successMessage}</div>}
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
       </div>
     </div>
   );
