@@ -1,0 +1,92 @@
+-- Insert into candidates
+INSERT INTO candidates (name, photo_url, resume_url) VALUES
+('Arjun Singh', NULL, NULL),
+('Neha Gupta', NULL, NULL),
+('Ravi Kumar', NULL, NULL),
+('Pooja Reddy', NULL, NULL),
+('Manoj Sharma', NULL, NULL),
+('Sanjana Iyer', NULL, NULL),
+('Vikas Mehta', NULL, NULL),
+('Anita Nair', NULL, NULL),
+('Rahul Verma', NULL, NULL),
+('Meera Das', NULL, NULL);
+
+-- Insert into jobs
+INSERT INTO jobs (job_title, job_url) VALUES
+('AI Engineer', NULL),
+('Full Stack Developer', NULL);
+
+-- Insert into applications
+INSERT INTO applications (candidate_id, job_id, application_date, status) VALUES
+(1, 1, '2024-11-01', 'Hired'),
+(2, 2, '2024-11-02', 'Rejected'),
+(3, 1, '2024-11-03', 'Waiting'),
+(4, 2, '2024-11-04', 'Hired'),
+(5, 1, '2024-11-05', 'Rejected'),
+(6, 2, '2024-11-06', 'Upcoming Interview'),
+(7, 1, '2024-11-07', 'Just applied'),
+(8, 2, '2024-11-08', 'Rejected'),
+(9, 1, '2024-11-09', 'Hired'),
+(10, 2, '2024-11-10', 'Waiting');
+
+-- Insert into interviews
+INSERT INTO interviews (application_id, candidate_id, interview_date, video_url, video_transcript_url, status, score, feedback_full, feedback_short) VALUES
+(1, 1, '2024-11-11', NULL, NULL, 'Completed', 85.5, 'Excellent communication and technical skills.', 'Excellent'),
+(2, 2, '2024-11-12', NULL, NULL, 'Completed', 45.0, 'Failed to meet expectations.', 'Needs improvement'),
+(3, 3, '2024-11-13', NULL, NULL, 'Scheduled', NULL, NULL, NULL),
+(4, 4, '2024-11-14', NULL, NULL, 'Completed', 90.0, 'Outstanding performance.', 'Outstanding'),
+(5, 5, '2024-11-15', NULL, NULL, 'Completed', 50.0, 'Average performance.', 'Average'),
+(6, 6, '2024-11-16', NULL, NULL, 'Scheduled', NULL, NULL, NULL),
+(7, 7, '2024-11-17', NULL, NULL, 'Cancelled', NULL, NULL, NULL),
+(8, 8, '2024-11-18', NULL, NULL, 'Completed', 60.0, 'Fair technical skills.', 'Fair'),
+(9, 9, '2024-11-19', NULL, NULL, 'Completed', 95.0, 'Exceptional skills.', 'Exceptional'),
+(10, 10, '2024-11-20', NULL, NULL, 'Scheduled', NULL, NULL, NULL);
+
+-- Insert into candidate_resumes
+INSERT INTO candidate_resumes (candidate_id, email, mobile, designation, short_summary) VALUES
+(1, 'arjun.singh@example.com', '9876543210', 'AI Engineer', 'Experienced in AI model development and deployment.'),
+(2, 'neha.gupta@example.com', '8765432109', 'Full Stack Developer', 'Skilled in MERN stack development.'),
+(3, 'ravi.kumar@example.com', '7654321098', 'DevOps Engineer', 'Specialized in CI/CD and cloud automation.'),
+(4, 'pooja.reddy@example.com', '6543210987', 'AI Engineer', 'Proficient in AI research and development.'),
+(5, 'manoj.sharma@example.com', '5432109876', 'Data Scientist', 'Expert in data analysis and visualization.'),
+(6, 'sanjana.iyer@example.com', '4321098765', 'Frontend Developer', 'Adept at building responsive UIs.'),
+(7, 'vikas.mehta@example.com', '3210987654', 'Backend Developer', 'Focus on scalable server-side systems.'),
+(8, 'anita.nair@example.com', '2109876543', 'Full Stack Developer', 'Experience in building end-to-end web applications.'),
+(9, 'rahul.verma@example.com', '1098765432', 'AI Engineer', 'Worked on cutting-edge AI solutions.'),
+(10, 'meera.das@example.com', '0987654321', 'Data Engineer', 'Experience in big data processing and pipelines.');
+
+-- Insert into previous_employments
+INSERT INTO previous_employments (candidate_resume_id, company_name, start_date, end_date) VALUES
+(1, 'Infosys', '2022-01-01', '2024-10-31'),
+(2, 'TCS', '2021-06-01', '2024-10-31'),
+(3, 'Wipro', '2020-05-01', '2024-10-31'),
+(4, 'Google', '2023-01-01', '2024-10-31'),
+(5, 'Amazon', '2022-03-01', '2024-10-31'),
+(6, 'Flipkart', '2021-11-01', '2024-10-31'),
+(7, 'Microsoft', '2023-04-01', '2024-10-31'),
+(8, 'Zomato', '2020-07-01', '2024-10-31'),
+(9, 'Cognizant', '2022-02-01', '2024-10-31'),
+(10, 'Capgemini', '2021-09-01', '2024-10-31');
+
+-- Insert into main_skills
+INSERT INTO main_skills (candidate_resume_id, skill) VALUES
+(1, 'Python'),
+(1, 'Machine Learning'),
+(2, 'JavaScript'),
+(2, 'React.js'),
+(3, 'AWS'),
+(3, 'Docker'),
+(4, 'Deep Learning'),
+(4, 'TensorFlow'),
+(5, 'Data Analysis'),
+(5, 'SQL'),
+(6, 'HTML'),
+(6, 'CSS'),
+(7, 'Java'),
+(7, 'Spring Boot'),
+(8, 'Node.js'),
+(8, 'Express.js'),
+(9, 'Computer Vision'),
+(9, 'OpenCV'),
+(10, 'Hadoop'),
+(10, 'Spark');
