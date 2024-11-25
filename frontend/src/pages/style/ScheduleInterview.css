@@ -1,18 +1,52 @@
-.success-message {
-    color: #155724;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 4px;
-  }
-  
-  .error-message {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 4px;
-  }
-  
+.date-range-picker {
+  display: flex;
+  gap: 20px; /* Spacing between start and end date pickers */
+  align-items: center; /* Vertically center the labels and inputs */
+  margin: 20px 0; /* Add space above and below the date pickers */
+}
+
+.date-picker {
+  flex: 1; /* Make both date pickers take equal width */
+}
+
+.date-picker label {
+  display: block;
+  margin-bottom: 5px; /* Add spacing between label and input */
+}
+
+.date-picker input {
+  width: 100%; /* Ensure the input takes the full width */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.upload-section {
+  display: flex; /* Use flexbox for horizontal layout */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Vertically center items */
+  width: 100%; /* Ensure the section spans the container width */
+  gap: 30px; /* Add spacing between the two file upload components */
+  margin-bottom: 20px; /* Add spacing below the section */
+}
+
+
+.file-upload {
+  flex: 0 0 auto; /* Prevent flex items from stretching */
+  text-align: center; /* Center-align the text within each file upload */
+  width: 45%; /* Adjust the width of each upload component for consistency */
+}
+
+
+
+.schedule-button {
+  margin: 20px 0; /* Add space above and below the button */
+  text-align: center; /* Center-align the button */
+}
+
+.success-message,
+.error-message {
+  margin-top: 20px; /* Add space above messages for better visibility */
+  text-align: center; /* Center-align the messages */
+  font-weight: bold;
+}

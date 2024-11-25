@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import './DateTimePicker.css'
+import './DateTimePicker.css';
 
-function DateTimePicker() {
-  const [selectedDate, setSelectedDate] = useState('');
-
+function DateTimePicker({ value, onChange }) {
   const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
+    onChange(e.target.value); // Pass the selected date to the parent component
   };
 
   return (
     <input
-      type="datetime-local"
-      value={selectedDate}
+      type="date"
+      value={value || ''} // Handle undefined values gracefully
       onChange={handleDateChange}
+      className="date-picker"
     />
   );
 }
