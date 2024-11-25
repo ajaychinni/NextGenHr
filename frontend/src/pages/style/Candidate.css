@@ -7,11 +7,13 @@
   white-space: nowrap;
   min-height: 150px; /* Ensures the panel has a default height */
   align-items: center; /* Centers placeholder text */
+  gap: 15px; /* Adds spacing between profile cards */
 }
+
 .ai-selected {
   background-color: #d4edda; /* Light green background */
 }
-  
+
 .ai-rejected {
   background-color: #f8d7da; /* Light red background */
 }
@@ -22,25 +24,16 @@
   text-align: center;
   width: 100%; /* Makes placeholder span the width of the container */
 }
-  
-  .profile-card-wrapper {
-    margin-right: 15px; /* Space between profile cards */
-  }
 
-
-  /* Dropdown styling */
-.form-label {
-  font-weight: bold;
-  margin-bottom: 5px;
+.profile-card-wrapper {
+  flex-shrink: 0; /* Prevents shrinking in flexbox */
+  margin-right: 10px; /* Space between cards */
 }
 
-.form-select {
-  max-width: 300px;
+.draggable {
+  cursor: grab;
 }
 
-/* Center-aligned Update button */
-button.btn-primary {
-  width: 150px;
+.draggable:active {
+  cursor: grabbing;
 }
-
-  

@@ -42,6 +42,24 @@ function Candidate() {
     setSelectedJobId(event.target.value);
   };
 
+  // Handle drag start
+  const handleDragStart = (event, candidate) => {
+    event.dataTransfer.setData('candidate', JSON.stringify(candidate));
+  };
+
+  // Handle drop
+  const handleDrop = (event, newStatus) => {
+    const candidate = JSON.parse(event.dataTransfer.getData('candidate'));
+    const updatedCandidates = candidates.map((c) =>
+      c.candidate_id === candidate.candidate_id ? { ...c, status: newStatus } : c
+    );
+    setCandidates(updatedCandidates);
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="container mt-4">
       {/* Top Bar with Dropdown */}
@@ -68,12 +86,23 @@ function Candidate() {
       <div className="row">
         <div className="col">
           <h3>AI Selected Candidates</h3>
-          <div className="candidate-panel ai-selected">
+          <div
+            className="candidate-panel ai-selected"
+            onDragOver={handleDragOver}
+            onDrop={(event) => handleDrop(event, 'Hired')}
+          >
             {candidates.filter((candidate) => candidate.status === 'Hired').length > 0 ? (
               candidates
                 .filter((candidate) => candidate.status === 'Hired')
                 .map((candidate) => (
-                  <ProfileCard key={candidate.candidate_id} candidate={candidate} />
+                  <div
+                    key={candidate.candidate_id}
+                    className="profile-card-wrapper"
+                    draggable
+                    onDragStart={(event) => handleDragStart(event, candidate)}
+                  >
+                    <ProfileCard candidate={candidate} />
+                  </div>
                 ))
             ) : (
               <div className="candidate-panel-placeholder">No candidates selected yet</div>
@@ -85,12 +114,23 @@ function Candidate() {
       <div className="row">
         <div className="col">
           <h3>AI Rejected Candidates</h3>
-          <div className="candidate-panel ai-rejected">
+          <div
+            className="candidate-panel ai-rejected"
+            onDragOver={handleDragOver}
+            onDrop={(event) => handleDrop(event, 'Rejected')}
+          >
             {candidates.filter((candidate) => candidate.status === 'Rejected').length > 0 ? (
               candidates
                 .filter((candidate) => candidate.status === 'Rejected')
                 .map((candidate) => (
-                  <ProfileCard key={candidate.candidate_id} candidate={candidate} />
+                  <div
+                    key={candidate.candidate_id}
+                    className="profile-card-wrapper"
+                    draggable
+                    onDragStart={(event) => handleDragStart(event, candidate)}
+                  >
+                    <ProfileCard candidate={candidate} />
+                  </div>
                 ))
             ) : (
               <div className="candidate-panel-placeholder">No candidates rejected yet</div>
