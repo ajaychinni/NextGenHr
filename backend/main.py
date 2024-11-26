@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from .routers import candidates, jobs, applications, interviews, candidate_resumes, previous_employments, main_skills, upload, status_bubbles, home_page_tables, candidate_profile
+from .routers import candidates, jobs, applications, interviews, candidate_resumes, previous_employments, main_skills, upload, status_bubbles, home_page_tables, candidate_profile, resumeExtraction, jobDescriptionExtraction
 from .database import engine, Base
+from backend.baseModel import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="NextGenHR API")
@@ -23,6 +24,8 @@ app.include_router(upload.router)
 app.include_router(status_bubbles.router)
 app.include_router(home_page_tables.router)
 app.include_router(candidate_profile.router)
+app.include_router(resumeExtraction.router)
+app.include_router(jobDescriptionExtraction.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,3 +38,8 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"message": "Welcome to NextGenHR API"}
+
+@app.on_event("startup")
+async def startup_event():
+    # Initialize the BaseModel and set it in the app's state
+    app.state.base_model = BaseModel()

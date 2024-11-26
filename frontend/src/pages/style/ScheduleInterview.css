@@ -50,3 +50,34 @@
   text-align: center; /* Center-align the messages */
   font-weight: bold;
 }
+
+.resume-details, .job-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between fields */
+  margin: 20px 0;
+}
+
+.resume-details {
+  width: 45%; /* Left side width */
+  float: left;
+}
+
+.job-details {
+  width: 45%; /* Right side width */
+  float: right;
+}
+
+.field label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

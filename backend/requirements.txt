@@ -8,3 +8,6 @@ pydantic
 pydantic-settings
 python-multipart
 email-validator
+mlx-lm
+jupyter ipywidgets
+notebook

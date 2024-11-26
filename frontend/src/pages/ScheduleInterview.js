@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import FileUpload from '../components/FileUpload/FileUpload';
 import TextArea from '../components/TextArea/TextArea';
 import DateTimePicker from '../components/DateTimePicker/DateTimePicker';
-
 import Button from '../components/Button/Button';
 import './style/ScheduleInterview.css';
 import axios from 'axios';
@@ -11,8 +10,20 @@ function ScheduleInterview() {
   const [resumeFile, setResumeFile] = useState(null);
   const [jobDescriptionFile, setJobDescriptionFile] = useState(null);
   const [extraQuestions, setExtraQuestions] = useState('');
-  const [startDate, setStartDate] = useState(null); // For start date
-  const [endDate, setEndDate] = useState(null); // For end date
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const [resumeDetails, setResumeDetails] = useState({
+    email: '',
+    name: '',
+    summary: '',
+  });
+
+  const [jobDetails, setJobDetails] = useState({
+    role: '',
+    skills: '',
+    description: '',
+  });
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -36,6 +47,12 @@ function ScheduleInterview() {
     formData.append('job_description', jobDescriptionFile);
     formData.append('start_date', startDate);
     formData.append('end_date', endDate);
+    formData.append('email', resumeDetails.email);
+    formData.append('name', resumeDetails.name);
+    formData.append('summary', resumeDetails.summary);
+    formData.append('role', jobDetails.role);
+    formData.append('skills', jobDetails.skills);
+    formData.append('job_description_text', jobDetails.description);
 
     try {
       const response = await axios.post(
@@ -62,13 +79,86 @@ function ScheduleInterview() {
         <div className="upload-section">
           <FileUpload
             label="Upload Resume (PDF, Doc)"
-            onFileChange={setResumeFile}
+            onFileChange={(file) => setResumeFile(file)}
           />
           <FileUpload
             label="Upload Job Description (PDF, Doc)"
-            onFileChange={setJobDescriptionFile}
+            onFileChange={(file) => setJobDescriptionFile(file)}
           />
         </div>
+
+        {/* Resume Details Section */}
+        {resumeFile && (
+          <div className="resume-details">
+            <div className="field">
+              <label>Email</label>
+              <input
+                type="email"
+                value={resumeDetails.email}
+                onChange={(e) =>
+                  setResumeDetails({ ...resumeDetails, email: e.target.value })
+                }
+              />
+            </div>
+            <div className="field">
+              <label>Name</label>
+              <input
+                type="text"
+                value={resumeDetails.name}
+                onChange={(e) =>
+                  setResumeDetails({ ...resumeDetails, name: e.target.value })
+                }
+              />
+            </div>
+            <div className="field">
+              <label>Resume Summary</label>
+              <TextArea
+                value={resumeDetails.summary}
+                onChange={(e) =>
+                  setResumeDetails({ ...resumeDetails, summary: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Job Description Details Section */}
+        {jobDescriptionFile && (
+          <div className="job-details">
+            <div className="field">
+              <label>Job Role</label>
+              <input
+                type="text"
+                value={jobDetails.role}
+                onChange={(e) =>
+                  setJobDetails({ ...jobDetails, role: e.target.value })
+                }
+              />
+            </div>
+            <div className="field">
+              <label>Skills</label>
+              <input
+                type="text"
+                value={jobDetails.skills}
+                onChange={(e) =>
+                  setJobDetails({ ...jobDetails, skills: e.target.value })
+                }
+              />
+            </div>
+            <div className="field">
+              <label>Job Description</label>
+              <TextArea
+                value={jobDetails.description}
+                onChange={(e) =>
+                  setJobDetails({
+                    ...jobDetails,
+                    description: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+        )}
 
         <div className="extra-questions">
           <label>Add Extra Questions / Comments for AI to ASK</label>
