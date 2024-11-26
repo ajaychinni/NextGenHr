@@ -11,3 +11,4 @@ email-validator
 mlx-lm
 jupyter ipywidgets
 notebook
+PyPDF2

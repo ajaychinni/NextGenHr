@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, Request
 from backend.baseModel import BaseModel
 from pydantic import BaseModel as PydanticBaseModel
+from fastapi.responses import JSONResponse
 
 router = APIRouter(
     prefix="/resumeExtraction",
@@ -13,7 +14,6 @@ class ResumeTextRequest(PydanticBaseModel):
 
 def get_base_model(request: Request):
     return request.app.state.base_model
-
 
 @router.post("/email_name")
 async def extract_email(
@@ -45,10 +45,15 @@ Ensure your output strictly matches this format, without extra characters, detai
         user_prompt=user_prompt,
         context=context
     )
-    print(response)
-    return response
 
+    # Parse response as JSON
+    import json
+    try:
+        response_json = json.loads(response)
+    except json.JSONDecodeError:
+        response_json = {"email": None, "name": None}
 
+    return JSONResponse(content=response_json)
 
 @router.post("/resume_summary")
 async def extract_resume_summary(
@@ -70,5 +75,6 @@ async def extract_resume_summary(
         user_prompt=user_prompt,
         context=context
     )
-    print(response)
-    return response
+
+    return {"summary": response}
+
