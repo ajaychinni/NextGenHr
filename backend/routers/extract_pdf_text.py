@@ -13,6 +13,7 @@ class PDFInput(BaseModel):
 
 @router.post("/", response_model=dict)
 def extract_pdf_text(input_data: PDFInput):
+    print("Inside extract_pdf")
     pdf_path = Path(input_data.pdf_path)
 
     # Check if the file exists

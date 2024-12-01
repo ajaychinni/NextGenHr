@@ -58,6 +58,7 @@
   margin: 20px 0;
 }
 
+
 .resume-details {
   width: 45%; /* Left side width */
   float: left;
@@ -67,6 +68,7 @@
   width: 45%; /* Right side width */
   float: right;
 }
+
 
 .field label {
   font-weight: bold;
