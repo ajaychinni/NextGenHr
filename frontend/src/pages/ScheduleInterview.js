@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FileUpload from '../components/FileUpload/FileUpload';
-import TextArea from '../components/TextArea/TextArea'; // Still used in other sections
+import TextArea from '../components/TextArea/TextArea'; 
 import DateTimePicker from '../components/DateTimePicker/DateTimePicker';
 import Button from '../components/Button/Button';
 import './style/ScheduleInterview.css';
@@ -42,58 +42,53 @@ function ScheduleInterview() {
     setSuccessMessage('');
     setErrorMessage('');
     setLoading(true); // Start loading
-
+  
     // Input Validations
     if (!resumeFile || !jobDescriptionFile) {
       setErrorMessage('Please upload both Resume and Job Description files.');
       setLoading(false);
       return;
     }
-
+  
     if (!startDate || !endDate) {
       setErrorMessage('Please select a start and end date.');
       setLoading(false);
       return;
     }
-
+  
     try {
       // Prepare FormData for file upload
       const formData = new FormData();
       formData.append('resume', resumeFile);
       formData.append('job_description', jobDescriptionFile);
-
+  
       // Upload files to FastAPI
       const uploadResponse = await axios.post('http://localhost:8000/upload-files', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      // console.log('Upload Response:', uploadResponse.data); // Debugging
-
+  
       if (uploadResponse.status === 200) {
         const { resume_path, job_description_path, resume_text, job_description_text } = uploadResponse.data;
-
-        // console.log('Resume Text:', resume_text); // Debugging
-        // console.log('Job Description Text:', job_description_text); // Debugging
-
+  
         // Prepare requests for extracting details
         const resumeEmailNameRequest = axios.post('http://localhost:8000/resumeExtraction/email_name', {
           resume_text,
         });
-
+  
         const resumeSummaryRequest = axios.post('http://localhost:8000/resumeExtraction/resume_summary', {
           resume_text,
         });
-
+  
         const jobRoleSkillsRequest = axios.post('http://localhost:8000/jobDescriptionExtraction/jobRole_skills', {
           jd_text: job_description_text,
         });
-
+  
         const jdSummaryRequest = axios.post('http://localhost:8000/jobDescriptionExtraction/jd_summary', {
           jd_text: job_description_text,
         });
-
+  
         // Execute all requests concurrently
         const [
           resumeEmailNameResponse,
@@ -106,60 +101,88 @@ function ScheduleInterview() {
           jobRoleSkillsRequest,
           jdSummaryRequest,
         ]);
-
-        // console.log('Resume Email/Name Response:', resumeEmailNameResponse.data); // Debugging
-        // console.log('Resume Summary Response:', resumeSummaryResponse.data); // Debugging
-        // console.log('Job Role/Skills Response:', jobRoleSkillsResponse.data); // Debugging
-        // console.log('JD Summary Response:', jdSummaryResponse.data); // Debugging
-
-        // Update Resume Details
+  
+        // Variables to hold the required data
+        let candidateEmail = '';
+        let candidateName = '';
+        let jobRole = '';
+        let jobDescription = '';
+  
+        // Update Resume Details and extract candidateEmail and candidateName
         if (resumeEmailNameResponse.status === 200 && resumeEmailNameResponse.data) {
           const { email, name } = resumeEmailNameResponse.data;
+          candidateEmail = email || '';
+          candidateName = name || '';
           setResumeDetails((prev) => ({
             ...prev,
-            email: email || '',
-            name: name || '',
+            email: candidateEmail,
+            name: candidateName,
           }));
         }
-
+  
         if (resumeSummaryResponse.status === 200 && resumeSummaryResponse.data) {
-          const summary = resumeSummaryResponse.data.summary; // Access the 'summary' field
+          const summary = resumeSummaryResponse.data.summary;
           setResumeDetails((prev) => ({
             ...prev,
             summary: summary || '',
           }));
         }
-
-        // Update Job Details
+  
+        // Update Job Details and extract jobRole and jobDescription
         if (jobRoleSkillsResponse.status === 200 && jobRoleSkillsResponse.data) {
-          const { jobRole, skills } = jobRoleSkillsResponse.data;
+          const { jobRole: extractedJobRole, skills } = jobRoleSkillsResponse.data;
+          jobRole = extractedJobRole || '';
           setJobDetails((prev) => ({
             ...prev,
-            role: jobRole || '',
+            role: jobRole,
             skills: Array.isArray(skills) ? skills.join(', ') : skills || '',
           }));
         }
-
+  
         if (jdSummaryResponse.status === 200 && jdSummaryResponse.data) {
-          const summary = jdSummaryResponse.data.summary; // Access the 'summary' field
+          const summary = jdSummaryResponse.data.summary;
+          jobDescription = summary || '';
           setJobDetails((prev) => ({
             ...prev,
-            description: summary || '',
+            description: jobDescription,
           }));
         }
-
-        setSuccessMessage('Files uploaded and processed successfully.');
+  
+        // Now that we have all details, proceed to call the emailText/generate endpoint
+  
+        // Format the dates as "YYYY-MM-DD"
+        const formattedStartDate = new Date(startDate).toISOString().split('T')[0];
+        const formattedEndDate = new Date(endDate).toISOString().split('T')[0];
+  
+        // Prepare the payload
+        const emailPayload = {
+          email_address: candidateEmail,
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
+          job_role: jobRole,
+          job_description: job_description_path, // Path to the uploaded job description PDF
+        };
+  
+        // Send the POST request to the FastAPI endpoint
+        const emailResponse = await axios.post('http://localhost:8000/emailText/generate', emailPayload);
+  
+        if (emailResponse.status === 200) {
+          setSuccessMessage(emailResponse.data.status);
+          console.log('Generated Email Text:', emailResponse.data.email_text); // Debugging
+        } else {
+          setErrorMessage('Failed to send email. Please try again.');
+        }
       } else {
         setErrorMessage('Failed to upload files. Please try again.');
       }
     } catch (error) {
       console.error('Error uploading or processing files:', error);
-      setErrorMessage('An error occurred while uploading or processing files. Please try again.');
+      setErrorMessage('An error occurred while processing your request. Please try again.');
     } finally {
       setLoading(false); // End loading
     }
   };
-
+  
   return (
     <div className="schedule-interview">
       <div className="content-container">
@@ -296,7 +319,6 @@ function ScheduleInterview() {
         {successMessage && <div className="success-message">{successMessage}</div>}
         {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-        {/* Debug Section Removed */}
       </div>
     </div>
   );

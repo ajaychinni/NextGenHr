@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import candidates, jobs, applications, interviews, candidate_resumes, previous_employments, main_skills, upload, status_bubbles, home_page_tables, candidate_profile, resumeExtraction, jobDescriptionExtraction, extract_pdf_text
+from .routers import candidates, jobs, applications, interviews, candidate_resumes, previous_employments, main_skills, upload, status_bubbles, home_page_tables, candidate_profile, resumeExtraction, jobDescriptionExtraction, extract_pdf_text, emailText
 from .database import engine, Base
 from backend.baseModel import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,6 +27,7 @@ app.include_router(candidate_profile.router)
 app.include_router(resumeExtraction.router)
 app.include_router(jobDescriptionExtraction.router)
 app.include_router(extract_pdf_text.router)
+app.include_router(emailText.router)
 
 app.add_middleware(
     CORSMiddleware,
