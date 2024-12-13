@@ -56,9 +56,9 @@ async def extract_job_role_skills(
 
     - Carefully analyze the entire job description to determine the most accurate job role.
     - Extract technical skills that are explicitly mentioned or strongly implied by the job requirements.
+    - Group skills into general categories where possible (e.g., "machine learning" instead of listing "decision trees", "logistic regression" separately).
+    - Extract technical skills that are explicitly mentioned or strongly implied, focusing on higher-level categories (e.g., "NoSQL DB" instead of specific ones like "Aerospike", "ScyllaDB").
     - The job role should be a single, specific title that best represents the core responsibility.
-    - Skills should be a comprehensive list of technical skills directly related to the job description.
-    - Focus on extracting the most relevant and specific information.
     - Do not use generic placeholders.
     - Ensure the output reflects the actual content of the job description.
 

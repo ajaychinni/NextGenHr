@@ -87,14 +87,21 @@ function ApplyJob() {
         const resumeSummaryRequest = axios.post('http://localhost:8000/resumeExtraction/resume_summary', {
           resume_text: resume_text,
         });
+        
+        console.log('Requesting job skills extraction...');
+        const jobRoleSkillsRequest = axios.post('http://localhost:8000/jobDescriptionExtraction/jobRole_skills', {
+          jd_text: job_description_text,
+        });
 
-        const [resumeEmailNameResponse, resumeSummaryResponse] = await Promise.all([
+        const [resumeEmailNameResponse, resumeSummaryResponse, jobRoleSkillsResponse] = await Promise.all([
           resumeEmailNameRequest,
           resumeSummaryRequest,
+          jobRoleSkillsRequest
         ]);
 
         console.log('Email/Name extraction response:', resumeEmailNameResponse.data);
         console.log('Summary extraction response:', resumeSummaryResponse.data);
+        console.log('Job skills extraction response:', jobRoleSkillsResponse.data);
 
         // Update Resume Details based on the responses
         if (resumeEmailNameResponse.status === 200 && resumeEmailNameResponse.data) {
