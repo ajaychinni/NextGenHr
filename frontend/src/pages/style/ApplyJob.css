@@ -1,0 +1,63 @@
+.apply-job .content-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .apply-job h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .upload-section {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    width: 100%; 
+    gap: 30px; 
+    margin-bottom: 20px;
+  }
+  
+  .file-upload {
+    text-align: center;
+    width: 45%; 
+  }
+  
+  .resume-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .field label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .field input, 
+  .field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .apply-button {
+    margin: 20px 0; 
+    text-align: center;
+  }
+  
+  .success-message,
+  .error-message {
+    margin-top: 20px; 
+    text-align: center; 
+    font-weight: bold;
+  }
+  
+  .loading-indicator {
+    margin-left: 10px;
+    font-weight: bold;
+  }
+  

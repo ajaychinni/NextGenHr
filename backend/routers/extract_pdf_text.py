@@ -25,11 +25,13 @@ def extract_pdf_text(input_data: PDFInput):
         raise HTTPException(status_code=400, detail="File is not a valid PDF")
 
     try:
-        # Extract text from the PDF
-        reader = PdfReader(pdf_path)
-        text = ""
-        for page in reader.pages:
-            text += page.extract_text()
+        # Open the PDF in read-only mode
+        with open(pdf_path, "rb") as pdf_file:
+            reader = PdfReader(pdf_file)
+            text = ""
+            for page in reader.pages:
+                if page is not None:
+                    text += page.extract_text() or ""
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error reading PDF: {str(e)}")
 
