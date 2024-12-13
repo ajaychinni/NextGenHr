@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FileUpload from '../components/FileUpload/FileUpload';
 import TextArea from '../components/TextArea/TextArea'; 
 import Button from '../components/Button/Button';
+import SkillAnalysis from '../components/SkillAnalysis/SkillAnalysis';
 import './style/ApplyJob.css';
 import axios from 'axios';
 
@@ -17,6 +18,7 @@ function ApplyJob() {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [skillAnalysisResults, setSkillAnalysisResults] = useState([]);
 
   useEffect(() => {
     console.log('resumeDetails updated:', resumeDetails);
@@ -26,19 +28,19 @@ function ApplyJob() {
     setSuccessMessage('');
     setErrorMessage('');
     setLoading(true);
-  
+
     if (!resumeFile) {
       console.log('No resume file uploaded.');
       setErrorMessage('Please upload a resume file.');
       setLoading(false);
       return;
     }
-  
+
     try {
       // Prepare FormData for file upload
       const formData = new FormData();
       formData.append('resume', resumeFile);
-  
+
       // Add hardcoded job_description
       const dummyFile = new File(
         [new Blob(["Dummy Job Description"], { type: 'application/pdf' })],
@@ -46,16 +48,16 @@ function ApplyJob() {
         { type: 'application/pdf' }
       );
       formData.append('job_description', dummyFile);
-  
+
       console.log('Uploading files to http://localhost:8000/upload-files...');
       const uploadResponse = await axios.post('http://localhost:8000/upload-files', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       console.log('Upload response:', uploadResponse);
-  
+
       if (uploadResponse.status === 200) {
         const { 
           resume_path, 
@@ -63,23 +65,23 @@ function ApplyJob() {
           resume_text, 
           job_description_text 
         } = uploadResponse.data;
-  
+
         if (!resume_path || !resume_text) {
           console.error('No resume_path or resume_text returned from the server. Check your endpoint response.');
           setErrorMessage('No resume text could be retrieved. Please ensure the file is valid.');
           setLoading(false);
           return;
         }
-  
+
         console.log('Extracted resume text:', resume_text);
         console.log('Extracted job description text:', job_description_text);
-  
+
         // Extract Email and Name
         console.log('Requesting email and name extraction...');
         const resumeEmailNameRequest = axios.post('http://localhost:8000/resumeExtraction/email_name', {
           resume_text: resume_text,
         });
-  
+
         // Extract Resume Summary
         console.log('Requesting resume summary extraction...');
         const resumeSummaryRequest = axios.post('http://localhost:8000/resumeExtraction/resume_summary', {
@@ -90,21 +92,17 @@ function ApplyJob() {
         const jobRoleSkillsRequest = axios.post('http://localhost:8000/jobDescriptionExtraction/jobRole_skills', {
           jd_text: job_description_text,
         });
-  
+
         const [resumeEmailNameResponse, resumeSummaryResponse, jobRoleSkillsResponse] = await Promise.all([
           resumeEmailNameRequest,
           resumeSummaryRequest,
           jobRoleSkillsRequest
         ]);
-  
+
         console.log('Email/Name extraction response:', resumeEmailNameResponse.data);
         console.log('Summary extraction response:', resumeSummaryResponse.data);
         console.log('Job skills extraction response:', jobRoleSkillsResponse.data);
 
-        console.log('Status:', jobRoleSkillsResponse.status);
-        console.log('Data exists:', !!jobRoleSkillsResponse.data);
-        console.log('Skills is array:', Array.isArray(jobRoleSkillsResponse.data?.skills));
-  
         // Update Resume Details based on the responses
         if (resumeEmailNameResponse.status === 200 && resumeEmailNameResponse.data) {
           const { email, name } = resumeEmailNameResponse.data;
@@ -117,7 +115,7 @@ function ApplyJob() {
         } else {
           console.warn('Email/Name extraction did not return expected data.');
         }
-  
+
         if (resumeSummaryResponse.status === 200 && resumeSummaryResponse.data) {
           const summary = resumeSummaryResponse.data.summary;
           console.log('Extracted summary:', summary);
@@ -155,14 +153,12 @@ function ApplyJob() {
           }
         
           console.log('Skill analysis results:', skillAnalysisResults);
+          setSkillAnalysisResults(skillAnalysisResults);
         
         } else {
           console.warn('No skills returned from jobRoleSkillsResponse or response not OK.');
-
         }
-        
-        
-  
+
         console.log('Resume details and skill analysis extracted successfully!');
         setSuccessMessage('Resume details and skill analysis extracted successfully!');
       } else {
@@ -177,8 +173,6 @@ function ApplyJob() {
       console.log('Done processing apply job request.');
     }
   }
-  
-
 
   return (
     <div className="apply-job">
@@ -194,8 +188,10 @@ function ApplyJob() {
             }}
           />
         </div>
+      </div>
 
-        {resumeFile && (
+      {resumeFile && (
+        <div className="resume-details-section">
           <div className="resume-details">
             <h2>Resume Details</h2>
             <div className="field">
@@ -231,8 +227,17 @@ function ApplyJob() {
               />
             </div>
           </div>
-        )}
+        </div>
+      )}
 
+      {skillAnalysisResults.length > 0 && (
+        <div className="skill-analysis-section">
+          <h2>Skill Analysis</h2>
+          <SkillAnalysis skills={skillAnalysisResults} />
+        </div>
+      )}
+
+      <div className="content-container">
         <div className="apply-button">
           <Button
             label="Apply Job"

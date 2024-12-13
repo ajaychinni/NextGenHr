@@ -3,7 +3,7 @@ from pydantic import BaseModel as PydanticBaseModel
 from typing import Optional
 import json
 
-from backend.baseModel import BaseModel  # Added this import to match the previous code
+from backend.baseModel import BaseModel 
 
 router = APIRouter(
     prefix="/skillScoreExtraction",
