@@ -22,42 +22,40 @@ function ApplyJob() {
     console.log('resumeDetails updated:', resumeDetails);
   }, [resumeDetails]);
 
-  const handleApplyJob = async () => {
+  async function handleApplyJob() {
     setSuccessMessage('');
     setErrorMessage('');
     setLoading(true);
-
+  
     if (!resumeFile) {
       console.log('No resume file uploaded.');
       setErrorMessage('Please upload a resume file.');
       setLoading(false);
       return;
     }
-
+  
     try {
       // Prepare FormData for file upload
       const formData = new FormData();
       formData.append('resume', resumeFile);
-
+  
       // Add hardcoded job_description
-      // This code assumes your backend can handle the dummy job description file upload as well.
       const dummyFile = new File(
-        [new Blob(["Dummy Job Description"], { type: 'application/pdf' })], 
-        '/Users/ajay/NextGenHR/NextGenHr/data/jobDescription/roku.pdf', 
+        [new Blob(["Dummy Job Description"], { type: 'application/pdf' })],
+        '/Users/ajay/NextGenHR/NextGenHr/data/jobDescription/roku.pdf',
         { type: 'application/pdf' }
       );
       formData.append('job_description', dummyFile);
-
+  
       console.log('Uploading files to http://localhost:8000/upload-files...');
       const uploadResponse = await axios.post('http://localhost:8000/upload-files', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+  
       console.log('Upload response:', uploadResponse);
-
-
+  
       if (uploadResponse.status === 200) {
         const { 
           resume_path, 
@@ -65,23 +63,23 @@ function ApplyJob() {
           resume_text, 
           job_description_text 
         } = uploadResponse.data;
-
+  
         if (!resume_path || !resume_text) {
           console.error('No resume_path or resume_text returned from the server. Check your endpoint response.');
           setErrorMessage('No resume text could be retrieved. Please ensure the file is valid.');
           setLoading(false);
           return;
         }
-
+  
         console.log('Extracted resume text:', resume_text);
         console.log('Extracted job description text:', job_description_text);
-
+  
         // Extract Email and Name
         console.log('Requesting email and name extraction...');
         const resumeEmailNameRequest = axios.post('http://localhost:8000/resumeExtraction/email_name', {
           resume_text: resume_text,
         });
-
+  
         // Extract Resume Summary
         console.log('Requesting resume summary extraction...');
         const resumeSummaryRequest = axios.post('http://localhost:8000/resumeExtraction/resume_summary', {
@@ -92,17 +90,21 @@ function ApplyJob() {
         const jobRoleSkillsRequest = axios.post('http://localhost:8000/jobDescriptionExtraction/jobRole_skills', {
           jd_text: job_description_text,
         });
-
+  
         const [resumeEmailNameResponse, resumeSummaryResponse, jobRoleSkillsResponse] = await Promise.all([
           resumeEmailNameRequest,
           resumeSummaryRequest,
           jobRoleSkillsRequest
         ]);
-
+  
         console.log('Email/Name extraction response:', resumeEmailNameResponse.data);
         console.log('Summary extraction response:', resumeSummaryResponse.data);
         console.log('Job skills extraction response:', jobRoleSkillsResponse.data);
 
+        console.log('Status:', jobRoleSkillsResponse.status);
+        console.log('Data exists:', !!jobRoleSkillsResponse.data);
+        console.log('Skills is array:', Array.isArray(jobRoleSkillsResponse.data?.skills));
+  
         // Update Resume Details based on the responses
         if (resumeEmailNameResponse.status === 200 && resumeEmailNameResponse.data) {
           const { email, name } = resumeEmailNameResponse.data;
@@ -115,7 +117,7 @@ function ApplyJob() {
         } else {
           console.warn('Email/Name extraction did not return expected data.');
         }
-
+  
         if (resumeSummaryResponse.status === 200 && resumeSummaryResponse.data) {
           const summary = resumeSummaryResponse.data.summary;
           console.log('Extracted summary:', summary);
@@ -127,8 +129,42 @@ function ApplyJob() {
           console.warn('Summary extraction did not return expected data.');
         }
 
-        console.log('Resume details extracted successfully!');
-        setSuccessMessage('Resume details extracted successfully!');
+        // If jobRoleSkillsResponse returned an array of skills, process them one by one
+        if (
+          jobRoleSkillsResponse.status === 200 && 
+          jobRoleSkillsResponse.data && 
+          Array.isArray(jobRoleSkillsResponse.data.skills)
+        ) {
+          const skills = jobRoleSkillsResponse.data.skills;
+          console.log('Job Role Skills:', skills);
+        
+          const skillAnalysisResults = [];
+        
+          // Process each skill sequentially
+          for (const skill of skills) {
+            const response = await axios.post('http://localhost:8000/skillScoreExtraction/skill_analysis', {
+              resume_text: resume_text,
+              skill: skill
+            });
+        
+            skillAnalysisResults.push({
+              skill: skill,
+              score: response.data.score,
+              reason: response.data.reason
+            });
+          }
+        
+          console.log('Skill analysis results:', skillAnalysisResults);
+        
+        } else {
+          console.warn('No skills returned from jobRoleSkillsResponse or response not OK.');
+
+        }
+        
+        
+  
+        console.log('Resume details and skill analysis extracted successfully!');
+        setSuccessMessage('Resume details and skill analysis extracted successfully!');
       } else {
         console.error('Failed to upload resume. Status:', uploadResponse.status);
         setErrorMessage('Failed to upload resume. Please try again.');
@@ -140,7 +176,9 @@ function ApplyJob() {
       setLoading(false);
       console.log('Done processing apply job request.');
     }
-  };
+  }
+  
+
 
   return (
     <div className="apply-job">
