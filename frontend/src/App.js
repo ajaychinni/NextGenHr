@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar'
 import ScheduleInterview from './pages/ScheduleInterview';
 import ApplyJob from './pages/ApplyJob'
 import Candidate from './pages/Candidate';
+import Interview from './pages/Interview'
 import { Route, Routes } from "react-router-dom"
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/candidate" element={<Candidate />} />
           <Route path="/schedule_interview" element={<ScheduleInterview />} />
           <Route path="/apply_job" element={<ApplyJob />} />
+          <Route path="/interview" element={<Interview />} />
         </Routes>
       </div>
     </>

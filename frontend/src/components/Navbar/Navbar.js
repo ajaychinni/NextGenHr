@@ -13,6 +13,7 @@ export default function Navbar() {
         <CustomLink to="/candidate">Candidate</CustomLink>
         <CustomLink to="/schedule_interview">Schedule Interview</CustomLink>
         <CustomLink to="/apply_job">Apply Job</CustomLink>
+        <CustomLink to="/interview">Interview</CustomLink>
       </ul>
     </nav>
   )

@@ -36,7 +36,7 @@ async def extract_skill_analysis(
     """
 
     system_prompt = """
-    You are a skill analysis engine. Given a candidate's resume text and a specific skill,
+    You are a skill analysis expert. Given a candidate's resume text and a specific skill,
     your task is to:
     1. Evaluate how well the resume demonstrates the candidate's proficiency in the given skill.
     2. Return a score from 0.0 to 1.0 representing the level of skill demonstrated.
