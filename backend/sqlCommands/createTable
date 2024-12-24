@@ -1,0 +1,140 @@
+psql postgres
+
+-- Connect to the postgres database 
+\c nextgenhr_db;
+
+-- Create ENUM types for status fields
+CREATE TYPE application_status AS ENUM ('Just applied', 'Upcoming Interview', 'Waiting', 'Hired', 'Rejected');
+CREATE TYPE interview_status AS ENUM ('Scheduled', 'Completed', 'Cancelled');
+
+-- Create Candidate table
+CREATE TABLE candidates (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    photo_url VARCHAR(255),
+    resume_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Job table
+CREATE TABLE jobs (
+    id SERIAL PRIMARY KEY,
+    job_title VARCHAR(255) NOT NULL,
+    job_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Application table
+CREATE TABLE applications (
+    id SERIAL PRIMARY KEY,
+    candidate_id INTEGER NOT NULL,
+    job_id INTEGER NOT NULL,
+    application_date DATE NOT NULL,
+    status application_status NOT NULL DEFAULT 'Just applied',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON DELETE CASCADE,
+    FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE,
+    UNIQUE(candidate_id, job_id)
+);
+
+-- Create Interview table
+CREATE TABLE interviews (
+    id SERIAL PRIMARY KEY,
+    application_id INTEGER NOT NULL,
+    candidate_id INTEGER NOT NULL,
+    interview_date DATE NOT NULL,
+    video_url VARCHAR(255),
+    video_transcript_url VARCHAR(255),
+    status interview_status NOT NULL DEFAULT 'Scheduled',
+    score FLOAT,
+    feedback_full TEXT,
+    feedback_short TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (application_id) REFERENCES applications(id) ON DELETE CASCADE,
+    FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON DELETE CASCADE
+);
+
+-- Create CandidateResume table
+CREATE TABLE candidate_resumes (
+    id SERIAL PRIMARY KEY,
+    candidate_id INTEGER NOT NULL,
+    email VARCHAR(255),
+    mobile VARCHAR(20),
+    designation VARCHAR(255),
+    short_summary TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON DELETE CASCADE
+);
+
+-- Create PreviousEmployment table
+CREATE TABLE previous_employments (
+    id SERIAL PRIMARY KEY,
+    candidate_resume_id INTEGER NOT NULL,
+    company_name VARCHAR(255),
+    start_date DATE,
+    end_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (candidate_resume_id) REFERENCES candidate_resumes(id) ON DELETE CASCADE
+);
+
+-- Create MainSkills table
+CREATE TABLE main_skills (
+    id SERIAL PRIMARY KEY,
+    candidate_resume_id INTEGER NOT NULL,
+    skill VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (candidate_resume_id) REFERENCES candidate_resumes(id) ON DELETE CASCADE
+);
+
+-- Create triggers to automatically update updated_at timestamp
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Create triggers to automatically update updated_at column for new tables
+
+CREATE TRIGGER update_candidates_updated_at
+    BEFORE UPDATE ON candidates
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_jobs_updated_at
+    BEFORE UPDATE ON jobs
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_applications_updated_at
+    BEFORE UPDATE ON applications
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_interviews_updated_at
+    BEFORE UPDATE ON interviews
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_candidate_resumes_updated_at
+    BEFORE UPDATE ON candidate_resumes
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_previous_employments_updated_at
+    BEFORE UPDATE ON previous_employments
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_main_skills_updated_at
+    BEFORE UPDATE ON main_skills
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();

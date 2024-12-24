@@ -1,0 +1,14 @@
+python-dotenv  
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+python-dotenv
+pydantic
+pydantic-settings
+python-multipart
+email-validator
+mlx-lm
+jupyter ipywidgets
+notebook
+PyPDF2

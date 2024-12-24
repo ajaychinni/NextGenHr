@@ -1,0 +1,30 @@
+.profile-card {
+    width: 300px;
+    margin: auto;
+    padding: 2px;
+  }
+  
+  .photo-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 2px;
+  }
+  
+  .score-box {
+    width: 90px;
+    height: 40px;
+  }
+  
+  .job-name-section {
+    margin-left: 15px;
+  }
+  
+  .job-title, .name-section {
+    width: 150px;
+  }
+  
+  .description-box {
+    padding: 1px;
+  }
+  

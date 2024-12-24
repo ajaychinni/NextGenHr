@@ -1,0 +1,23 @@
+/* src/components/TextArea/TextArea.css */
+
+.custom-textarea {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  resize: vertical;
+  box-sizing: border-box; /* Ensures padding is included in the total width */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus state */
+}
+
+.custom-textarea::placeholder {
+  color: #aaa;
+}
+
+.custom-textarea:focus {
+  border-color: #7b61ff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(123, 97, 255, 0.5); 
+}

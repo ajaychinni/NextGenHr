@@ -1,0 +1,57 @@
+.candidate-panel {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: row; /* Change to row for horizontal stacking */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  gap: 10px; /* Add spacing between cards */
+  min-height: 200px; /* Set a minimum height for the panel */
+}
+
+.profile-card-wrapper {
+  flex: 0 0 auto; /* Prevent cards from shrinking or growing */
+  margin-right: 10px; /* Add space between cards */
+  min-width: 200px; /* Set a minimum width for cards */
+}
+
+
+.panel {
+  display: flex; /* Use flexbox for child elements */
+  flex-direction: row; /* Stack items horizontally */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  width: 100%; /* Ensure panels take up full width */
+  padding: 10px;
+  border-radius: 5px;
+  min-height: 150px; /* Minimum height for panels */
+  gap: 10px; /* Add spacing between cards */
+}
+
+.ai-selected {
+  background-color: #d4edda; /* Light green for selected */
+}
+
+.ai-rejected {
+  background-color: #f8d7da; /* Light red for rejected */
+}
+
+.candidate-panel-placeholder {
+  font-size: 16px;
+  color: #6c757d;
+  text-align: center;
+  width: 100%;
+}
+
+
+
+.candidate-panel-wrapper {
+  display: flex;
+  flex-direction: column; /* Stack panels vertically */
+  gap: 20px; /* Add spacing between panels */
+}
+
+
+
+
+
